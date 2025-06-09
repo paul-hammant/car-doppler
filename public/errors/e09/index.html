@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E09: No Clear Pattern - Doppler Speed Detector</title>
+    <link rel="icon" href="../../favicon.ico" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #f8f9fa;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #ffd93d;
+        }
+        .section h2 {
+            color: #ffd93d;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .back-button {
+            display: inline-block;
+            background: #007AFF;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .back-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        }
+        .checklist {
+            background: rgba(40, 167, 69, 0.1);
+            border: 2px solid rgba(40, 167, 69, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .doppler-visual {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .error-code {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 No Clear Pattern</h1>
+        <div class="error-code">E09</div>
+        <p class="subtitle">The algorithm couldn't detect a clear Doppler frequency shift pattern</p>
+
+        <div class="section">
+            <h2>🎯 What This Means</h2>
+            <p>The audio was processed, but the algorithm couldn't find the characteristic <strong>frequency change pattern</strong> that indicates a vehicle passing by with the Doppler effect.</p>
+        </div>
+
+        <div class="section">
+            <h2>📊 Required Doppler Pattern</h2>
+            <div class="doppler-visual">
+                <strong>What the algorithm looks for:</strong><br><br>
+                🚗 Approaching: ♪♪♪ Higher frequency<br>
+                ⬇️<br>
+                🚗 Passing: ♪♫♪ Frequency transition<br>
+                ⬇️<br>
+                🚗 Receding: ♫♫♫ Lower frequency<br><br>
+                <strong>Clear frequency decrease over time</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Most Common Causes</h2>
+            <ul>
+                <li><strong>Vehicle too slow:</strong> Insufficient Doppler shift</li>
+                <li><strong>Wrong positioning:</strong> Not perpendicular to traffic</li>
+                <li><strong>Multiple vehicles:</strong> Overlapping signals confuse algorithm</li>
+                <li><strong>Background noise:</strong> Traffic/wind masks vehicle signal</li>
+                <li><strong>Electric vehicles:</strong> Too quiet for clear detection</li>
+                <li><strong>Inconsistent recording:</strong> Phone movement during recording</li>
+                <li><strong>Buses & large vehicles:</strong> Complex sound signatures (see below)</li>
+                <li><strong>Recording too short:</strong> Need 4+ seconds approach, 4+ seconds recede</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>✅ Positioning Checklist</h2>
+            <div class="checklist">
+                <p><strong>Verify your setup:</strong></p>
+                <ul>
+                    <li>☐ Standing <strong>perpendicular</strong> to road direction</li>
+                    <li>☐ Phone pointed toward <strong>approaching vehicles</strong></li>
+                    <li>☐ Distance: <strong>5-15 feet</strong> from road edge</li>
+                    <li>☐ Clear line of sight to vehicles</li>
+                    <li>☐ Minimal background noise</li>
+                    <li>☐ Vehicle traveling at <strong>25+ mph</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Optimal Conditions</h2>
+            <p><strong>Choose vehicles that are:</strong></p>
+            <ul>
+                <li><strong>Fast enough:</strong> 25+ mph for clear Doppler shift</li>
+                <li><strong>Loud enough:</strong> Gas-powered cars, trucks</li>
+                <li><strong>Isolated:</strong> Not mixed with other vehicle sounds</li>
+                <li><strong>Consistent speed:</strong> Not accelerating or braking</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🚌 Challenging Vehicle Types</h2>
+            <p><strong>Some vehicles are harder to detect:</strong></p>
+            <ul>
+                <li><strong>Buses:</strong> Rear-mounted engines create complex sound patterns</li>
+                <li><strong>Large trucks:</strong> Multiple noise sources (engine, tires, wind)</li>
+                <li><strong>Motorcycles:</strong> Irregular RPM patterns</li>
+                <li><strong>Electric vehicles:</strong> Minimal engine noise</li>
+                <li><strong>Hybrid vehicles:</strong> Engine may not be running consistently</li>
+                <li><strong>Diesel vehicles:</strong> Lower frequency rumble can be masked</li>
+            </ul>
+            <p><em>💡 Best results: Standard gasoline cars at steady speeds</em></p>
+        </div>
+
+        <div class="section">
+            <h2>🚫 What to Avoid</h2>
+            <ul>
+                <li><strong>Slow vehicles:</strong> School zones, traffic jams</li>
+                <li><strong>Multiple vehicles:</strong> Busy highways with overlapping sounds</li>
+                <li><strong>Windy conditions:</strong> Wind noise interferes</li>
+                <li><strong>Electric vehicles:</strong> Often too quiet</li>
+                <li><strong>Stop-and-go traffic:</strong> Inconsistent speeds</li>
+                <li><strong>Short recordings:</strong> Less than 8 seconds total</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📋 Step-by-Step Improvement</h2>
+            <ol>
+                <li><strong>Find a better location:</strong> Straight road with steady traffic</li>
+                <li><strong>Position precisely:</strong> 90° to traffic direction</li>
+                <li><strong>Wait for isolated vehicles:</strong> Single car with no others nearby</li>
+                <li><strong>Target faster vehicles:</strong> 30+ mph if possible</li>
+                <li><strong>Record timing:</strong> 4+ seconds approach, 4+ seconds recede</li>
+                <li><strong>Choose simple vehicles:</strong> Avoid buses, trucks, electric cars</li>
+                <li><strong>Stay very still:</strong> Any phone movement affects results</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Technical Requirements</h2>
+            <p>For successful detection, the algorithm needs:</p>
+            <ul>
+                <li><strong>Frequency shift:</strong> ≥100 Hz change</li>
+                <li><strong>Clear pattern:</strong> Monotonic frequency decrease</li>
+                <li><strong>Sufficient duration:</strong> 8+ seconds total (4+ approach, 4+ recede)</li>
+                <li><strong>Good signal-to-noise ratio:</strong> Vehicle signal > background</li>
+                <li><strong>Single dominant source:</strong> One vehicle, not multiple overlapping</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="../../" class="back-button">← Back to Speed Detector</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; opacity: 0.8; font-size: 0.9em;">
+            <p>💡 Remember: This tool is experimental and should not be used for law enforcement</p>
+        </div>
+    </div>
+</body>
+</html>
+</body>
+</html>

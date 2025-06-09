@@ -1,0 +1,39 @@
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-button {
+  flex: 1;
+  min-width: 90px;
+  max-width: 110px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #007AFF;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  line-height: 1.2;
+}
+
+.control-button:hover:not(:disabled) {
+  background: #0056CC;
+}
+
+.control-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.record-button.recording {
+  background: #FF3B30;
+}
+
+.record-button.recording:hover:not(:disabled) {
+  background: #e6342a;
+}

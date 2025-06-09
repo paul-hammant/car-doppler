@@ -1,0 +1,39 @@
+.status-display {
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.status-text {
+  display: inline-block;
+}
+
+.status-ready {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-recording {
+  background: #fff3e0;
+  color: #f57c00;
+  animation: pulse 2s infinite;
+}
+
+.status-processing {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.status-error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}

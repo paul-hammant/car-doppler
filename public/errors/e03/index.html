@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E03: Recording Too Short - Doppler Speed Detector</title>
+    <link rel="icon" href="../../favicon.ico" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #f8f9fa;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #ffd93d;
+        }
+        .section h2 {
+            color: #ffd93d;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .back-button {
+            display: inline-block;
+            background: #007AFF;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .back-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        }
+        .timing-visual {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .error-code {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ Recording Too Short</h1>
+        <div class="error-code">E03</div>
+        <p class="subtitle">The recording was shorter than 3 seconds - not enough time for Doppler analysis</p>
+
+        <div class="section">
+            <h2>🎯 The Solution</h2>
+            <p><strong>Record for at least 5-8 seconds</strong> to capture the complete Doppler shift as a vehicle approaches and passes by.</p>
+        </div>
+
+        <div class="section">
+            <h2>⏱️ Optimal Recording Timeline</h2>
+            <div class="timing-visual">
+                <strong>Perfect Recording Duration:</strong><br><br>
+                🚗 Vehicle approaching (100ft away)<br>
+                ⬇️<br>
+                📱 START RECORDING<br>
+                ⬇️<br>
+                🚗 Vehicle passes by (closest point)<br>
+                ⬇️<br>
+                🚗 Vehicle receding (100ft away)<br>
+                ⬇️<br>
+                📱 STOP RECORDING<br><br>
+                <strong>Total time: 5-8 seconds</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Why Duration Matters</h2>
+            <p>The Doppler effect requires capturing the <strong>complete frequency change</strong> as a vehicle:</p>
+            <ul>
+                <li><strong>Approaches:</strong> Higher frequency (moving toward you)</li>
+                <li><strong>Passes:</strong> Frequency transition point</li>
+                <li><strong>Recedes:</strong> Lower frequency (moving away from you)</li>
+            </ul>
+            <p>Short recordings miss critical parts of this frequency shift, making speed calculation impossible.</p>
+        </div>
+
+        <div class="section">
+            <h2>📋 Step-by-Step Fix</h2>
+            <ol>
+                <li><strong>Spot the vehicle:</strong> When it's about 100 feet away</li>
+                <li><strong>Start recording:</strong> Before it gets too close</li>
+                <li><strong>Keep recording:</strong> Through the entire pass</li>
+                <li><strong>Continue recording:</strong> Until it's 100 feet past you</li>
+                <li><strong>Stop recording:</strong> Only after the complete pass</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>💡 Pro Tips</h2>
+            <ul>
+                <li><strong>Don't rush:</strong> Better to record too long than too short</li>
+                <li><strong>Watch the vehicle:</strong> Start early, end late</li>
+                <li><strong>Stay steady:</strong> Keep the phone pointed at the vehicle</li>
+                <li><strong>Be patient:</strong> Wait for the right vehicle and timing</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="../../" class="back-button">← Back to Speed Detector</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; opacity: 0.8; font-size: 0.9em;">
+            <p>💡 Remember: This tool is experimental and should not be used for law enforcement</p>
+        </div>
+    </div>
+</body>
+</html>

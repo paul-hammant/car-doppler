@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E08: Audio Clipped/Too Loud - Doppler Speed Detector</title>
+    <link rel="icon" href="../../favicon.ico" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #f8f9fa;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #ffd93d;
+        }
+        .section h2 {
+            color: #ffd93d;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .back-button {
+            display: inline-block;
+            background: #007AFF;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .back-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        }
+        .warning-box {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .warning-box h3 {
+            color: #ff6b6b;
+            margin-top: 0;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .error-code {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📢 Audio Clipped/Too Loud</h1>
+        <div class="error-code">E08</div>
+        <p class="subtitle">The audio signal was too loud and got distorted, preventing accurate analysis</p>
+
+        <div class="warning-box">
+            <h3>⚠️ Audio Distortion Detected</h3>
+            <p>When audio is too loud, it gets "clipped" - the peaks get cut off, destroying the frequency information needed for Doppler analysis.</p>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Quick Fixes</h2>
+            <ul>
+                <li><strong>Move further away:</strong> Increase distance from the road</li>
+                <li><strong>Avoid very loud vehicles:</strong> Skip air horns, loud exhausts, sirens</li>
+                <li><strong>Check phone settings:</strong> Some phones have mic gain settings</li>
+                <li><strong>Remove phone case:</strong> Cases can amplify and distort sound</li>
+                <li><strong>Point away slightly:</strong> Don't aim directly at extremely loud sources</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔊 Optimal Audio Levels</h2>
+            <p>The best recordings have:</p>
+            <ul>
+                <li><strong>Clear audio:</strong> Loud enough to hear the vehicle clearly</li>
+                <li><strong>No distortion:</strong> No crackling or harsh sounds</li>
+                <li><strong>Consistent volume:</strong> Not maxing out the microphone</li>
+                <li><strong>Good signal-to-noise ratio:</strong> Vehicle sound over background noise</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🚛 Vehicle Selection</h2>
+            <p><strong>Good targets (moderate volume):</strong></p>
+            <ul>
+                <li>Regular passenger cars</li>
+                <li>Standard delivery trucks</li>
+                <li>City buses (from appropriate distance)</li>
+            </ul>
+            
+            <p><strong>Avoid (too loud):</strong></p>
+            <ul>
+                <li>Vehicles with modified exhausts</li>
+                <li>Emergency vehicles with sirens</li>
+                <li>Large trucks with air brakes</li>
+                <li>Motorcycles with loud pipes</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📍 Distance Guidelines</h2>
+            <p>Adjust your distance based on vehicle type:</p>
+            <ul>
+                <li><strong>Cars:</strong> 5-10 feet from road edge</li>
+                <li><strong>Trucks:</strong> 10-15 feet from road edge</li>
+                <li><strong>Loud vehicles:</strong> 15-20 feet from road edge</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Technical Details</h2>
+            <p>Audio clipping occurs when the input signal exceeds the microphone's maximum input level. This:</p>
+            <ul>
+                <li>Flattens the audio waveform peaks</li>
+                <li>Introduces harmonic distortion</li>
+                <li>Destroys the precise frequency information needed for Doppler analysis</li>
+                <li>Makes speed calculation impossible</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="../../" class="back-button">← Back to Speed Detector</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; opacity: 0.8; font-size: 0.9em;">
+            <p>💡 Remember: This tool is experimental and should not be used for law enforcement</p>
+        </div>
+    </div>
+</body>
+</html>
