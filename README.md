@@ -72,6 +72,8 @@ The single test demonstrates **mph → km/h → mph** conversion with 5-second p
 
 #### **Full App Tests** (Complete User Workflows)
 
+E2e for this repo: Tests the full application stack (React frontend + browser APIs + WASM library) with full build pipeline startup taking up to 2 minutes. 
+
 - `npm run test:e2e` - Headless end-to-end tests
 - `npm run test:e2e:headed` - Visual end-to-end tests
 - `npm run test:e2e:ui` - Interactive e2e debugging
@@ -160,13 +162,13 @@ The component tests use a **Test Harness** that simulates how components would b
 
 - Frontend: React 19, TypeScript and Vite 
 - Build System: Nx workspace with Vite plugin
-- Audio Processing: Web Audio API + DSP Worker (Doppler shift analysis)
+- Audio Processing: Web Audio API + DSP Worker (Doppler shift analysis). FFT aspects of that via a WASM compiled (https://github.com/echogarden-project/pffft-wasm).
 - Testing: Vitest (Unit - base of pyramid), Playwright (Component and full stack further up the test pyramid)  
 - Deployment: GitHub Actions into GitHub Pages. App does not have a server side, obviously.
 
 ## Speed Calculation for the three doppler implementations
 
-Via sibling repo: https://github.com/paul-hammant/Car-Speed-Via-Doppler-Library and deployed lib/service.
+Via sibling repo: https://github.com/paul-hammant/Car-Speed-Via-Doppler-Library and deployed lib/service - as well as speed detection library, this details the dependence on https://github.com/echogarden-project/pffft-wasm.
 
 ### GitHub Action Deployment Steps (`.github/workflows/deploy.yml`)
 
@@ -192,7 +194,7 @@ could (possibly) do on your dev workstation:
 
 Currently deploys on GH without running tests, linting, or type checking could mean errors could reach production.
 
-# TODO
+# Still TODO
 
 1. Get WASM + SIMD enabled working - it seems to have load problems
 2. Have a fallback mechanism from that, through WASM with SIMD disabled (currently the only confihired impl), to pure JavaScript as a last resort.
