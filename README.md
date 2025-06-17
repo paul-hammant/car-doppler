@@ -4,7 +4,7 @@ A React TypeScript application that uses Doppler shift analysis to detect vehicl
 
 Very much a work in progress, but the deployed site is [https://paul-hammant.github.io/car-doppler/](https://paul-hammant.github.io/car-doppler/), and wildly inaccurate for the time being.
 
-This is basically an app in order to help me see a particular style of test automation that's component-centric. I blogged about [in 2017](https://paulhammant.com/2017/02/01/ui-component-testing/) and now again in 2025.
+This is basically an app in order to help me see a particular style of test automation that's component-centric. I blogged about [in 2017](https://paulhammant.com/2017/02/01/ui-component-testing/) and now again [in 2025](https://paulhammant.com/2025/06/17/ui-component-testing-revisited/).
 
 
 ## Quick Start - See the Component Testing Pattern
@@ -153,24 +153,20 @@ The component tests use a **Test Harness** that simulates how components would b
 
 - Unit tests: 2-5ms per test (fastest feedback)
 - Integration tests: 100-500ms 
-- Component tests: 15 seconds each (includes browser startup + visual verification)
+- Component tests: < 1 second each (ignoring browser startup + visual verification)
 - Full app tests: 5-15 seconds (complete user workflows)
 
 ## Architecture
 
-- Frontend: React 19, TypeScript and Vite
+- Frontend: React 19, TypeScript and Vite 
 - Build System: Nx workspace with Vite plugin
 - Audio Processing: Web Audio API + DSP Worker (Doppler shift analysis)
 - Testing: Vitest (Unit - base of pyramid), Playwright (Component and full stack further up the test pyramid)  
-- Deployment: GitHub Actions into GitHub Pages. App does not have a server side obviously.
+- Deployment: GitHub Actions into GitHub Pages. App does not have a server side, obviously.
 
-## Speed Calculation
+## Speed Calculation for the three doppler implementations
 
 Via sibling repo: https://github.com/paul-hammant/Car-Speed-Via-Doppler-Library and deployed lib/service.
-
-## GitHub Actions Deployment Pipeline
-
-The application automatically deploys to GitHub Pages on each push to `main`. Here's the complete pipeline with quality gates:
 
 ### GitHub Action Deployment Steps (`.github/workflows/deploy.yml`)
 
@@ -195,6 +191,12 @@ could (possibly) do on your dev workstation:
 **Quality Gate Risk**
 
 Currently deploys on GH without running tests, linting, or type checking could mean errors could reach production.
+
+# TODO
+
+1. Get WASM + SIMD enabled working - it seems to have load problems
+2. Have a fallback mechanism from that, through WASM with SIMD disabled (currently the only confihired impl), to pure JavaScript as a last resort.
+3. More strategies for approach/recede timing for clips and more alternates for engine note, cutting out road noise, etc.
 
 # Accuracy Warning 
 
