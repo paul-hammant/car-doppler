@@ -42,6 +42,7 @@ export default defineConfig({
       '**/dist/**',
       '**/e2e/**',
       '**/*.ct.test.{ts,tsx}',
+      '**/*.selenium.test.{ts,tsx}',
       '**/playwright-report/**',
       '**/test-results/**'
     ],

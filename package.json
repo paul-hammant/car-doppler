@@ -19,7 +19,7 @@
     "test:selenium:all": "jest --config jest.config.selenium.js",
     "start": "REACT_APP_BUILD_VERSION=$(date +\"%Y%m%d-%H%M\") nx serve",
     "build": "REACT_APP_BUILD_VERSION=$(date +\"%Y%m%d-%H%M\") nx build",
-    "test": "jest",
+    "test": "nx test",
     "dev": "REACT_APP_BUILD_VERSION=$(date +\"%y%m%d-%H%M\") nx serve"
   },
   "eslintConfig": {
