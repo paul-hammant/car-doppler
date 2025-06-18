@@ -31,6 +31,13 @@ jobs:
     - name: Build
       run: npm run build
       
+    - name: Run Cypress E2E tests
+      run: |
+        npm run start &  # Start the app in the background
+        npx cypress run --e2e
+        # Add command to kill the server if it doesn't stop automatically
+        # For example, kill $(lsof -t -i:3000) or pkill node
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
       

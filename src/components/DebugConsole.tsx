@@ -8,7 +8,7 @@ import { useFFTStatus, FFTStatus } from '../services/fft-status';
 
 export interface LogEntry {
   timestamp: string;
-  type: 'LOG' | 'ERROR' | 'WARN' | 'INFO';
+  type: 'LOG' | 'ERROR' | 'WARN' | 'INFO' | 'SUCCESS' | 'DEBUG';
   message: string;
   color: string;
 }

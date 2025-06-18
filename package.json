@@ -18,15 +18,12 @@
     "build": "REACT_APP_BUILD_VERSION=$(date +\"%Y%m%d-%H%M\") nx build",
     "test": "nx test",
     "dev": "REACT_APP_BUILD_VERSION=$(date +\"%y%m%d-%H%M\") nx serve",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:headed": "playwright test --headed",
-    "test:ct": "playwright test -c playwright-ct.config.ts",
-    "test:ct:ui": "playwright test -c playwright-ct.config.ts --ui",
-    "test:ct:headed": "playwright test -c playwright-ct.config.ts --headed",
-    "test:ct:timing": "npm run test:ct && node scripts/analyze-test-timing.js",
-    "test:ct:benchmark": "node scripts/benchmark-median-test.js",
-    "test:ct:benchmark:compare": "node scripts/benchmark-median-test.js --compare"
+    "test:ct": "cypress run --component",
+    "test:ct:ui": "cypress open --component",
+    "test:ct:headed": "cypress run --component --headed",
+    "test:e2e": "cypress run --e2e",
+    "test:e2e:ui": "cypress open --e2e",
+    "test:e2e:headed": "cypress run --e2e --headed"
   },
   "eslintConfig": {
     "extends": [
@@ -47,22 +44,30 @@
     ]
   },
   "devDependencies": {
+    "@cypress/react": "^9.0.1",
+    "@cypress/webpack-dev-server": "^4.1.0",
     "@nx/vite": "21.1.3",
     "@nx/web": "21.1.3",
-    "@playwright/experimental-ct-react": "^1.53.0",
-    "@playwright/test": "^1.53.0",
     "@rollup/plugin-replace": "^6.0.2",
+    "@testing-library/cypress": "^10.0.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "^4.5.2",
     "@vitest/ui": "^3.0.0",
+    "css-loader": "^7.1.2",
+    "cypress": "^14.5.0",
     "eslint-config-react-app": "^7.0.1",
+    "html-webpack-plugin": "^5.6.3",
     "jest-watch-typeahead": "^2.2.2",
     "jiti": "2.4.2",
     "nx": "21.1.3",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
     "vite": "^6.3.5",
     "vitest": "^3.2.3",
-    "web-vitals": "^5.0.2"
+    "web-vitals": "^5.0.2",
+    "webpack": "^5.99.9",
+    "webpack-dev-server": "^5.2.2"
   }
 }
