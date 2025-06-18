@@ -1,0 +1,7 @@
+Serving static bundles from: /app/dist_harness_bundles
+Component test server (compiled) listening on http://localhost:3001
+Server (compiled) rendering ControlsTestHarness with props: { testName: 'Initial State Visibility' }
+Server (compiled) rendering ControlsTestHarness with props: { testName: 'Recording Toggle Event Coupling' }
+Server (compiled) rendering ControlsTestHarness with props: { testName: 'Units Toggle Event Coupling' }
+Server (compiled) rendering ControlsTestHarness with props: { testName: 'Processing State Test', initialProcessing: true }
+Server (compiled) rendering ControlsTestHarness with props: { testName: 'Complex Multi-Interaction Scenario' }

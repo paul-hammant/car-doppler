@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from 'react';
-import { Controls } from '../Controls';
+import { Controls } from '../Controls'; // Corrected to named import
 
 // Test Harness Component - simulates how Controls would be used in the real app
 export const ControlsTestHarness: React.FC<{

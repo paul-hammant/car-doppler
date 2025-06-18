@@ -1,0 +1,73 @@
+jest-haste-map: Haste module naming collision: react-app
+  The following files share their name; please adjust your hasteImpl:
+    * <rootDir>/package.json
+    * <rootDir>/dist/react-app/package.json
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-initial-state.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-recording-toggle-before.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-recording-toggle-started.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-recording-toggle-stopped.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-units-toggle-before.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-units-toggle-imperial.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-units-toggle-metric.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-processing-state.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-complex-scenario-start.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-complex-scenario-mid.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+  console.log
+    Screenshot saved to test-results/selenium/Controls-complex-scenario-final.png
+
+      at src/test-utils/selenium-utils.ts:97:11
+
+PASS src/components/__tests__/Controls.ct.selenium.test.ts (12.452 s)
+  Controls Component - Selenium Tests
+    ✓ renders in test harness with initial state visible (3554 ms)
+    ✓ demonstrates event coupling - recording toggle (2320 ms)
+    ✓ demonstrates event coupling - units toggle (2089 ms)
+    ✓ shows processing state affecting component (1349 ms)
+    ✓ complex scenario - multiple interactions with full trace (2249 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        12.991 s
+Ran all test suites matching src/components/__tests__/Controls.ct.selenium.test.ts.

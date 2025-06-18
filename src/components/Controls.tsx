@@ -59,4 +59,4 @@ export const Controls: React.FC<ControlsProps> = ({
   );
 };
 
-export default Controls;
+// Removed default export: export default Controls;

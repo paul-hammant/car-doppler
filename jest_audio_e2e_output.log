@@ -1,0 +1,23 @@
+jest-haste-map: Haste module naming collision: react-app
+  The following files share their name; please adjust your hasteImpl:
+    * <rootDir>/package.json
+    * <rootDir>/dist/react-app/package.json
+
+PASS e2e/audio-processing.selenium.test.ts (6.602 s)
+  Audio Processing Features - Selenium E2E
+    ✓ handles file upload for offline analysis (1597 ms)
+    ✓ debug console captures audio processing logs (1694 ms)
+    ✓ maintains state during unit conversion (1322 ms)
+    ✓ positioning guide provides helpful instructions (1251 ms)
+    ○ skipped handles microphone permission denial gracefully - SKIPPED in Playwright: Requires reliable microphone permission mocking
+    ○ skipped shows processing state when analyzing audio - SKIPPED in Playwright: Requires microphone and real audio processing
+    ○ skipped enables download button after recording - SKIPPED in Playwright: Requires microphone and download handling
+    ○ skipped displays speed calculation progress on slow devices - SKIPPED in Playwright: Requires microphone and timing-dependent WASM
+    ○ skipped debug console allows copying logs - SKIPPED in Playwright: Clipboard API inconsistent in headless
+    ○ skipped displays appropriate error codes for common issues - SKIPPED in Playwright: Requires microphone permission denial
+
+Test Suites: 1 passed, 1 total
+Tests:       6 skipped, 4 passed, 10 total
+Snapshots:   0 total
+Time:        7.315 s
+Ran all test suites matching e2e/audio-processing.selenium.test.ts.
