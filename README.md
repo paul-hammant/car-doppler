@@ -11,16 +11,16 @@ This is basically an app in order to help me see a particular style of test auto
 
 ```bash
 npm install
-npx playwright install
-npm run test:ct:headed -- UnitsConversion.ct.test.tsx
+npm run test:ct:headed
 ```
 
-This will open a browser and show a **Test Harness** UI where you can see:
-- Component behavior
-- Test harness state changes
-- Event coupling trace
+This will start a component test server and launch Firefox to run **Test Harness Component Testing** with Selenium WebDriver, showing:
+- Component behavior with real browser automation
+- Test harness state changes via event coupling
+- Complete interaction flow with screenshot documentation
+- Visual evidence of each test step
 
-The single test demonstrates **mph → km/h → mph** conversion with 5-second pauses so you can follow the interaction flow.
+The tests demonstrate the **mph → km/h → mph** conversion cycle and recording toggle interactions using Selenium WebDriver for cross-browser compatibility.
 
 # Developer Advice
 
@@ -31,11 +31,13 @@ The single test demonstrates **mph → km/h → mph** conversion with 5-second p
    npm install
    ```
 
-2. **Install Playwright Browsers** (for component and full app testing)
+2. **Install Selenium WebDriver** (for component and end-to-end testing)
    ```bash
-   npx playwright install
-   npx playwright install-deps  # System dependencies for Linux
+   # Firefox driver (geckodriver) is installed automatically via npm
+   # For other browsers, you may need additional setup
    ```
+
+I, Paul, am developing on a Chromebook, and proper "Chrome" isn't available for Selenium use, so I'm using Firefox. I think Chromium (via apt-get was a choice too). I could be wrong.
 
 3. **Verify Setup**
    ```bash
@@ -65,18 +67,18 @@ The single test demonstrates **mph → km/h → mph** conversion with 5-second p
 
 #### **Component Tests** (why this project was created)
 
-- `npm run test:ct` - Headless component tests with test harness
-- `npm run test:ct:headed` - **Visual component tests** (recommended for demos)
-- `npm run test:ct:ui` - Interactive component test debugging
-- `npm run test:ct:headed -- UnitsConversion.ct.test.tsx` - Run a specific test file
+- `npm run test:ct` - Headless Selenium component tests with test harness
+- `npm run test:ct:headed` - **Visual component tests** (recommended for demos) - launches Firefox
+- `npm run test:selenium:all` - Run all Selenium-based tests (component + e2e)
+- Component tests use Selenium WebDriver with Firefox for cross-browser compatibility
 
 #### **Full App Tests** (Complete User Workflows)
 
-E2e for this repo: Tests the full application stack (React frontend + browser APIs + WASM library) with full build pipeline startup taking up to 2 minutes. 
+E2e for this repo: Tests the full application stack (React frontend + browser APIs + WASM library) using Selenium WebDriver for comprehensive browser testing.
 
-- `npm run test:e2e` - Headless end-to-end tests
-- `npm run test:e2e:headed` - Visual end-to-end tests
-- `npm run test:e2e:ui` - Interactive e2e debugging
+- `npm run test:e2e` - Headless Selenium end-to-end tests
+- `npm run test:e2e:headed` - Visual Selenium end-to-end tests with Firefox
+- Uses the same Selenium infrastructure as component tests for consistency
 
 #### **Code Quality**
 
@@ -96,11 +98,12 @@ E2e for this repo: Tests the full application stack (React frontend + browser AP
 
 #### **Component Testing** (per blog entries)
 
-- **Tool**: Playwright Experimental Component Testing
+- **Tool**: Selenium WebDriver with Jest
 - **Approach**: Implements [UI Component Testing pattern](https://paulhammant.com/2017/02/01/ui-component-testing) (2017)
 - **Key Innovation**: Tests both the component AND the test harness with event coupling
-- **Speed**: ~15 seconds per test (includes visual verification)
-- **Location**: `src/components/__tests__/*.ct.test.tsx`
+- **Speed**: ~0.6 seconds per test (includes comprehensive screenshot documentation)
+- **Location**: `src/components/__tests__/*.selenium.test.ts`
+- **Browser**: Firefox via geckodriver for cross-browser compatibility
 
 **What Makes This Special:**
 
@@ -128,14 +131,15 @@ The component tests use a **Test Harness** that simulates how components would b
 
 **Component Test Commands:**
 
-- `npm run test:ct` - Headless component tests
-- `npm run test:ct:headed` - **Visual mode** with browser UI, screenshots
-- `npm run test:ct:ui` - Interactive debugging mode
+- `npm run test:ct` - Headless Selenium component tests
+- `npm run test:ct:headed` - **Visual mode** with Firefox browser, comprehensive screenshots
+- `npm run test:ct:server` - Start component test server manually
+- `npm run test:selenium:all` - Run all Selenium tests (component + e2e)
 
 **Example Tests:**
 
-- `Controls.ct.test.tsx` - Recording/units toggle with event coupling
-- `UnitsConversion.ct.test.tsx` - mph → km/h → mph conversion cycle
+- `Controls.ct.selenium.test.ts` - Recording/units toggle with event coupling and screenshot documentation
+- Tests use external component test server for realistic browser environment
 
 #### **Integration Testing**
 
@@ -145,25 +149,26 @@ The component tests use a **Test Harness** that simulates how components would b
 
 #### **Full App Testing** (Top of Test Pyramid)
 
-- **Tool**: Playwright End-to-End
+- **Tool**: Selenium WebDriver End-to-End
 - **Scope**: Complete user workflows with audio processing
-- **Speed**: 5-15 seconds per test
-- **Location**: `e2e/*.spec.ts`
-- **Run**: `npm run test:e2e:headed` for visual mode
+- **Speed**: Variable depending on test complexity
+- **Location**: E2E tests use the same Selenium infrastructure as component tests
+- **Run**: `npm run test:e2e:headed` for visual mode with Firefox
 
-**Test Execution Times (per test on slower dev workstation):**
+**Test Execution Times (per test - based on 100-iteration analysis):**
 
 - Unit tests: 2-5ms per test (fastest feedback)
 - Integration tests: 100-500ms 
-- Component tests: < 1 second each (ignoring browser startup + visual verification)
-- Full app tests: 5-15 seconds (complete user workflows)
+- Component tests: ~0.585 seconds each (includes screenshot documentation via Selenium)
+- Full app tests: Variable timing with comprehensive browser automation
 
 ## Architecture
 
 - Frontend: React 19, TypeScript and Vite 
 - Build System: Nx workspace with Vite plugin
 - Audio Processing: Web Audio API + DSP Worker (Doppler shift analysis). FFT aspects of that via a WASM compiled (https://github.com/echogarden-project/pffft-wasm).
-- Testing: Vitest (Unit - base of pyramid), Playwright (Component and full stack further up the test pyramid)  
+- Testing: Vitest (Unit - base of pyramid), Selenium WebDriver (Component and E2E testing with Firefox for cross-browser compatibility)
+- Component Test Server: Express server for realistic component testing environment
 - Deployment: GitHub Actions into GitHub Pages. App does not have a server side, obviously.
 
 ## Speed Calculation for the three doppler implementations
@@ -181,8 +186,8 @@ could (possibly) do on your dev workstation:
 4. Lint Code *(skipped)* - `npm run lint` or `npx eslint .`
 5. Type Check *(skipped)* - `npm run typecheck` (TypeScript validation)
 6. Run Unit Tests *(skipped)* - `npm run test` (Vitest tests)
-7. Run Component Tests *(skipped)* - `npm run test:ct` (Playwright component tests with debug harness)
-8. Run Full App Tests *(skipped)* - `npm run test:e2e` (Playwright tests on complete application)
+7. Run Component Tests *(skipped)* - `npm run test:ct` (Selenium component tests with test harness)
+8. Run Full App Tests *(skipped)* - `npm run test:e2e` (Selenium tests on complete application)
 9. Security Audit *(skipped)* - `npm audit` (vulnerability scanning)
 10. **Build Application** - `npm run build` (Nx → Vite → `./dist/react-app`)
 11. Verify Build *(skipped)* - `npm run preview` (smoke test built artifacts)
