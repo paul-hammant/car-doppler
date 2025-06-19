@@ -203,3 +203,10 @@ Currently deploys on GH without running tests, linting, or type checking could m
 # Accuracy Warning 
 
 **Again, Speed calculations are experimental and wildly inaccurate.** This webapp Should NOT be used for law enforcement or official measurements. We'd need a bunch of MP3/WAV recordings of known speeds, in order to get the mathematics to be more accurate and even then it would STILL BE WILDLY INACCURATE.
+
+# Comparisons to Cypress and Selenium (for component testing)
+
+No need to wonder, they're here in this repo on branches:
+
+1. [cypress_instead_of_playwright](https://github.com/paul-hammant/car-doppler/tree/cypress_instead_of_playwright)
+2. [selenium_instead_of_playwright](https://github.com/paul-hammant/car-doppler/tree/selenium_instead_of_playwright)
