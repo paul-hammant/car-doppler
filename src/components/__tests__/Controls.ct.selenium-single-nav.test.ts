@@ -9,22 +9,22 @@ import {
 
 const HARNESS_BASE_URL = 'http://localhost:3001/render-component';
 
-describe('Controls Component - Selenium Tests', () => {
+describe('Controls Component - Single Navigation Selenium Tests', () => {
   let driver: WebDriver;
 
   beforeAll(async () => {
     driver = getSharedDriver();
     // Navigate once to any test harness page - we'll reuse this browser tab
-    await driver.get(`${HARNESS_BASE_URL}/ControlsTestHarness?testName=Initial`);
+    await driver.get(`${HARNESS_BASE_URL}/ControlsTestHarness?testName=SingleNavigation`);
     await findElementByTestId(driver, 'test-name');
   });
 
-  // Helper function to update the current page instead of full navigation
-  const loadTestHarness = async (testName: string, initialProps: Record<string, any> = {}) => {
+  // Helper function to update the current page instead of navigating
+  const updateTestHarness = async (testName: string, initialProps: Record<string, any> = {}) => {
     const params = new URLSearchParams({ testName, ...initialProps }).toString();
     const newUrl = `${HARNESS_BASE_URL}/ControlsTestHarness?${params}`;
     
-    // Use window.location.replace for faster page updates
+    // Use window.location.replace to avoid back button issues but still faster than navigate
     await driver.executeScript(`window.location.replace('${newUrl}');`);
     
     // Wait for the new content to load
@@ -32,9 +32,9 @@ describe('Controls Component - Selenium Tests', () => {
   };
 
   test('renders in test harness with initial state visible', async () => {
-    await loadTestHarness('Initial State Visibility');
+    await updateTestHarness('Initial State Visibility');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-initial-state.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-initial-state-single-nav.png');
 
     // Assert on the COMPONENT
     expect(await getTextByTestId(driver, 'record-button')).toContain('Start');
@@ -47,9 +47,9 @@ describe('Controls Component - Selenium Tests', () => {
   });
 
   test('demonstrates event coupling - recording toggle', async () => {
-    await loadTestHarness('Recording Toggle Event Coupling');
+    await updateTestHarness('Recording Toggle Event Coupling');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-before.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-before-single-nav.png');
 
     // Initial state assertions
     expect(await getTextByTestId(driver, 'record-button')).toContain('Start');
@@ -59,7 +59,7 @@ describe('Controls Component - Selenium Tests', () => {
     // Click the record button
     await clickElementByTestId(driver, 'record-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-started.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-started-single-nav.png');
 
     // Assert on COMPONENT state change
     expect(await getTextByTestId(driver, 'record-button')).toContain('Stop');
@@ -71,7 +71,7 @@ describe('Controls Component - Selenium Tests', () => {
     // Toggle back
     await clickElementByTestId(driver, 'record-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-stopped.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-stopped-single-nav.png');
 
     // Final state assertions
     expect(await getTextByTestId(driver, 'record-button')).toContain('Start');
@@ -80,9 +80,9 @@ describe('Controls Component - Selenium Tests', () => {
   });
 
   test('demonstrates event coupling - units toggle', async () => {
-    await loadTestHarness('Units Toggle Event Coupling');
+    await updateTestHarness('Units Toggle Event Coupling');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-before.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-before-single-nav.png');
 
     // Initial state
     expect(await getTextByTestId(driver, 'unit-toggle-button')).toContain('mph');
@@ -91,7 +91,7 @@ describe('Controls Component - Selenium Tests', () => {
     // Click to switch to imperial
     await clickElementByTestId(driver, 'unit-toggle-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-imperial.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-imperial-single-nav.png');
 
     // Component updated
     expect(await getTextByTestId(driver, 'unit-toggle-button')).toContain('km/h');
@@ -103,7 +103,7 @@ describe('Controls Component - Selenium Tests', () => {
     // Switch back
     await clickElementByTestId(driver, 'unit-toggle-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-metric.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-metric-single-nav.png');
 
     expect(await getTextByTestId(driver, 'unit-toggle-button')).toContain('mph');
     expect(await getTextByTestId(driver, 'harness-units-state')).toContain('METRIC (km/h)');
@@ -111,19 +111,14 @@ describe('Controls Component - Selenium Tests', () => {
   });
 
   test('shows processing state affecting component', async () => {
-    // This test requires passing initial props to the harness.
-    // The loadTestHarness function needs to be able to pass these to the rendering server.
-    // For now, this test will likely fail or test the default (non-processing) state
-    // until the harness serving mechanism is more robust.
-    await loadTestHarness('Processing State Test', { initialProcessing: 'true' });
+    await updateTestHarness('Processing State Test', { initialProcessing: 'true' });
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-processing-state.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-processing-state-single-nav.png');
 
     const recordButton = await findElementByTestId(driver, 'record-button');
     const unitToggleButton = await findElementByTestId(driver, 'unit-toggle-button');
 
     // Check if elements are disabled
-    // Selenium's isEnabled() returns true if the element is enabled, false otherwise.
     expect(await recordButton.isEnabled()).toBe(false);
     expect(await unitToggleButton.isEnabled()).toBe(false);
 
@@ -132,35 +127,27 @@ describe('Controls Component - Selenium Tests', () => {
   });
 
   test('complex scenario - multiple interactions with full trace', async () => {
-    await loadTestHarness('Complex Multi-Interaction Scenario');
+    await updateTestHarness('Complex Multi-Interaction Scenario');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-start.png');
-
-    // Verify initial state
-    expect(await getTextByTestId(driver, 'record-button')).toContain('Start');
-    expect(await getTextByTestId(driver, 'unit-toggle-button')).toContain('mph');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-start-single-nav.png');
 
     await clickElementByTestId(driver, 'record-button');
     await clickElementByTestId(driver, 'unit-toggle-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-mid.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-mid-single-nav.png');
 
     await clickElementByTestId(driver, 'record-button');
     await clickElementByTestId(driver, 'unit-toggle-button');
 
-    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-final.png');
+    await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-final-single-nav.png');
 
-    // Final state should be back to initial
     expect(await getTextByTestId(driver, 'record-button')).toContain('Start');
     expect(await getTextByTestId(driver, 'unit-toggle-button')).toContain('mph');
     expect(await getTextByTestId(driver, 'harness-recording-state')).toContain('OFF');
     expect(await getTextByTestId(driver, 'harness-units-state')).toContain('METRIC');
-    
-    // Verify event log contains all events
-    const eventLog = await getTextByTestId(driver, 'event-log');
-    expect(eventLog).toContain('Recording started');
-    expect(eventLog).toContain('Units changed to imperial');
-    expect(eventLog).toContain('Recording stopped');
-    expect(eventLog).toContain('Units changed to metric');
+    expect(await getTextByTestId(driver, 'event-log')).toContain('Recording started');
+    expect(await getTextByTestId(driver, 'event-log')).toContain('Units changed to imperial');
+    expect(await getTextByTestId(driver, 'event-log')).toContain('Recording stopped');
+    expect(await getTextByTestId(driver, 'event-log')).toContain('Units changed to metric');
   });
 });

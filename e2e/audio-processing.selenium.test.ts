@@ -1,26 +1,30 @@
 import { Builder, By, Key, WebDriver, until } from 'selenium-webdriver';
 import {
-  getDriver,
-  quitDriver,
+  getSharedE2EDriver,
   findElementByTestId,
   // clickElementByTestId, // May not be needed for these specific tests
   // getTextByTestId,
   isElementVisibleByTestId
 } from '../src/test-utils/selenium-utils';
 
+// Using localhost for now, but could be http://car-doppler-audio-e2e.localtest.me:3000/car-doppler/
+// for more realistic domain testing once DNS is configured  
 const APP_BASE_URL = 'http://localhost:3000/car-doppler/';
 
 describe('Audio Processing Features - Selenium E2E', () => {
   let driver: WebDriver;
 
-  beforeEach(async () => {
-    driver = await getDriver();
+  beforeAll(async () => {
+    driver = getSharedE2EDriver();
+    // Navigate once to the app for all tests
     await driver.get(APP_BASE_URL);
-    await driver.wait(until.elementLocated(By.css('h1')), 10000); // Wait for page load
+    await driver.wait(until.elementLocated(By.css('h1')), 10000);
   });
 
-  afterEach(async () => {
-    await quitDriver(driver);
+  beforeEach(async () => {
+    // Reset to homepage for each test (much faster than full navigation)
+    await driver.executeScript('window.location.replace(arguments[0]);', APP_BASE_URL);
+    await driver.wait(until.elementLocated(By.css('h1')), 5000);
   });
 
   // Test migrated from Playwright (was not skipped)

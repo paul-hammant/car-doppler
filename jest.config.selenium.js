@@ -13,5 +13,8 @@ module.exports = {
   ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'
-  }
+  },
+  maxWorkers: 1,
+  testTimeout: 30000,
+  setupFilesAfterEnv: ['<rootDir>/src/test-utils/selenium-jest-setup.ts']
 };

@@ -54,6 +54,16 @@ const PORT = process.env.COMPONENT_TEST_SERVER_PORT || 3001;
 // A flag to tell the server if it's running in its compiled 'dist_server' form
 const IS_DIST_SERVER = __filename.includes('dist_server');
 
+// Serve the test mounter HTML page
+app.get('/test-mounter', (req, res) => {
+    const testMounterPath = path.resolve(__dirname, 'test-mounter.html');
+    if (fs.existsSync(testMounterPath)) {
+        res.sendFile(testMounterPath);
+    } else {
+        res.status(404).send('Test mounter not found');
+    }
+});
+
 app.get('/render-component/:componentName', async (req, res) => {
     const { componentName } = req.params;
     const queryProps = req.query;
@@ -79,6 +89,30 @@ app.get('/render-component/:componentName', async (req, res) => {
         res.send(html);
     } else {
         res.status(500).send(`<h1>Error rendering component</h1><p>${(componentElementOrError as any).error}</p>`);
+    }
+});
+
+// New endpoint for fragment rendering (just the component HTML, no full page)
+app.get('/render-component-fragment/:componentName', async (req, res) => {
+    const { componentName } = req.params;
+    const queryProps = req.query;
+    const props: Record<string, any> = {};
+    for (const key in queryProps) {
+        const value = queryProps[key] as string;
+        if (value === 'true') props[key] = true;
+        else if (value === 'false') props[key] = false;
+        else if (value && !isNaN(Number(value))) props[key] = Number(value);
+        else props[key] = value;
+    }
+
+    console.log(`Server rendering fragment ${componentName} with props:`, props);
+    const componentElementOrError = await importComponent(componentName, props, IS_DIST_SERVER);
+
+    if (React.isValidElement(componentElementOrError)) {
+        const componentHtml = ReactDOMServer.renderToString(componentElementOrError);
+        res.send(componentHtml);
+    } else {
+        res.status(500).send(`<div>Error rendering component: ${(componentElementOrError as any).error}</div>`);
     }
 });
 

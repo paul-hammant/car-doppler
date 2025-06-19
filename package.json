@@ -13,14 +13,16 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "test:ct:selenium:server": "node ./dist_server/test-utils/component-test-server/server_for_compile.js",
-    "test:ct:selenium": "jest --config jest.config.selenium.js --testMatch \"**/src/components/__tests__/**/*.selenium.test.ts\"",
-    "test:e2e:selenium": "jest --config jest.config.selenium.js --testMatch \"**/e2e/**/*.selenium.test.ts\"",
-    "test:selenium:all": "jest --config jest.config.selenium.js",
     "start": "REACT_APP_BUILD_VERSION=$(date +\"%Y%m%d-%H%M\") nx serve",
     "build": "REACT_APP_BUILD_VERSION=$(date +\"%Y%m%d-%H%M\") nx build",
     "test": "nx test",
-    "dev": "REACT_APP_BUILD_VERSION=$(date +\"%y%m%d-%H%M\") nx serve"
+    "dev": "REACT_APP_BUILD_VERSION=$(date +\"%y%m%d-%H%M\") nx serve",
+    "test:e2e": "jest --config jest.config.selenium-e2e.js",
+    "test:e2e:headed": "jest --config jest.config.selenium-e2e.js --verbose",
+    "test:ct": "jest --config jest.config.selenium.js --testMatch \"**/src/components/__tests__/**/*.selenium.test.ts\"",
+    "test:ct:headed": "jest --config jest.config.selenium.js --testMatch \"**/src/components/__tests__/**/*.selenium.test.ts\" --verbose",
+    "test:ct:server": "node ./dist_server/test-utils/component-test-server/server_for_compile.js",
+    "test:selenium:all": "jest --config jest.config.selenium.js"
   },
   "eslintConfig": {
     "extends": [

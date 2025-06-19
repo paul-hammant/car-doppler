@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Test Mounter</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background-color: #f0f0f0; }
+        .test-harness-container { padding: 20px; background-color: #f5f5f5; min-height: 300px; }
+        .component-section { border: 2px solid #007acc; padding: 10px; margin: 10px 0; background-color: white; }
+        .harness-state-section { border: 2px solid #28a745; padding: 10px; margin: 10px 0; background-color: white; }
+        .event-log-section { border: 2px solid #ffc107; padding: 10px; margin: 10px 0; background-color: white; }
+        #mounting-status { 
+            position: fixed; 
+            top: 10px; 
+            right: 10px; 
+            background: #007acc; 
+            color: white; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="mounting-status">Ready for mounting</div>
+    <div id="root" class="test-harness-container">
+        <div data-testid="test-name">Test: Ready to mount components</div>
+        <div>Use window.mountComponent() to dynamically mount test scenarios</div>
+    </div>
+
+    <script>
+        // Global test mounting interface
+        window.testMounter = {
+            currentComponent: null,
+            
+            // Mount a component with specific props
+            mountComponent: async function(componentName, props = {}) {
+                const status = document.getElementById('mounting-status');
+                status.textContent = 'Mounting...';
+                
+                try {
+                    // Send request to server to get component HTML
+                    const params = new URLSearchParams({ ...props }).toString();
+                    const response = await fetch(`/render-component-fragment/${componentName}?${params}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to mount component: ${response.statusText}`);
+                    }
+                    
+                    const html = await response.text();
+                    
+                    // Replace the root content with the new component
+                    document.getElementById('root').innerHTML = html;
+                    
+                    this.currentComponent = { componentName, props };
+                    status.textContent = `Mounted: ${componentName}`;
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Error mounting component:', error);
+                    status.textContent = 'Mount failed';
+                    return false;
+                }
+            },
+            
+            // Update props on the current component
+            updateProps: async function(newProps) {
+                if (!this.currentComponent) {
+                    throw new Error('No component currently mounted');
+                }
+                
+                const mergedProps = { ...this.currentComponent.props, ...newProps };
+                return this.mountComponent(this.currentComponent.componentName, mergedProps);
+            },
+            
+            // Get current component info
+            getCurrentComponent: function() {
+                return this.currentComponent;
+            }
+        };
+        
+        // Expose mountComponent as a global function for easier Selenium access
+        window.mountComponent = window.testMounter.mountComponent.bind(window.testMounter);
+        window.updateProps = window.testMounter.updateProps.bind(window.testMounter);
+        
+        // Signal that the test mounter is ready
+        window.testMounterReady = true;
+        console.log('Test mounter ready for component mounting');
+    </script>
+</body>
+</html>

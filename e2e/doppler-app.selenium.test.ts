@@ -1,7 +1,6 @@
 import { Builder, By, Key, WebDriver, until, WebElement } from 'selenium-webdriver';
 import {
-  getDriver,
-  quitDriver,
+  getSharedE2EDriver,
   findElementByTestId,
   clickElementByTestId,
   getTextByTestId,
@@ -9,26 +8,31 @@ import {
   takeScreenshot
 } from '../src/test-utils/selenium-utils';
 
+// Using localhost for now, but could be http://car-doppler-e2e-tests.localtest.me:3000/car-doppler/
+// for more realistic domain testing once DNS is configured
 const APP_BASE_URL = 'http://localhost:3000/car-doppler/';
 
 describe('Doppler Speed Detection App - E2E Selenium Tests', () => {
   let driver: WebDriver;
 
-  beforeEach(async () => {
-    driver = await getDriver();
+  beforeAll(async () => {
+    driver = getSharedE2EDriver();
+    // Navigate once to the app for all tests
     await driver.get(APP_BASE_URL);
     await driver.wait(until.elementLocated(By.css('h1')), 10000);
   });
 
-  afterEach(async () => {
-    await quitDriver(driver);
+  beforeEach(async () => {
+    // Reset to homepage for each test (much faster than full navigation)
+    await driver.executeScript('window.location.replace(arguments[0]);', APP_BASE_URL);
+    await driver.wait(until.elementLocated(By.css('h1')), 5000);
   });
 
   test('displays app title and version', async () => {
     const titleElement = await driver.findElement(By.css('h1'));
     expect(await titleElement.getText()).toContain('Doppler Speed Detector');
     const versionElement = await driver.findElement(By.css('.version'));
-    expect(await versionElement.getText()).toMatch(/^v(2\.1\.2|\d{8}-\d{4})$/);
+    expect(await versionElement.getText()).toMatch(/^v(2\.1\.2|\d{6}-\d{4})$/);
   });
 
   test('shows default speed display', async () => {
@@ -129,6 +133,11 @@ describe('Doppler Speed Detection App - E2E Selenium Tests', () => {
   });
 
   test('has proper page title', async () => {
+    // Wait for title to load properly after page navigation
+    await driver.wait(async () => {
+      const title = await driver.getTitle();
+      return title.includes('Doppler');
+    }, 5000);
     expect(await driver.getTitle()).toMatch(/Doppler Speed Detector/);
   });
 
