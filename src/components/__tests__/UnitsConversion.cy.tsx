@@ -4,7 +4,7 @@
 
 import { ControlsTestHarness } from './ControlsTestHarness';
 
-describe('Units Conversion - Paul Hammant Pattern', () => {
+describe('Units Conversion - Test Harness Component Testing', () => {
   it('demonstrates mph → km/h → mph conversion cycle with full visibility', () => {
     cy.mount(
       <ControlsTestHarness testName="Units Conversion Cycle: mph → km/h → mph" />
@@ -23,6 +23,9 @@ describe('Units Conversion - Paul Hammant Pattern', () => {
     // Event log is empty
     cy.get('[data-testid="event-log"]').should('contain.text', 'No events yet...');
 
+    // Screenshot: Initial metric state
+    cy.screenshot('UnitsConversion-cycle-initial-metric-cypress', { capture: 'viewport' });
+
     // === FIRST CLICK: mph → km/h (metric to imperial) ===
     cy.get('[data-testid="unit-toggle-button"]').click();
 
@@ -35,6 +38,9 @@ describe('Units Conversion - Paul Hammant Pattern', () => {
     
     // Event was logged
     cy.get('[data-testid="event-log"]').should('contain.text', 'Units changed to imperial');
+
+    // Screenshot: Switched to imperial state
+    cy.screenshot('UnitsConversion-cycle-switched-imperial-cypress', { capture: 'viewport' });
 
     // === SECOND CLICK: km/h → mph (imperial back to metric) ===
     cy.get('[data-testid="unit-toggle-button"]').click();
@@ -49,6 +55,9 @@ describe('Units Conversion - Paul Hammant Pattern', () => {
     // Both events logged
     cy.get('[data-testid="event-log"]').should('contain.text', 'Units changed to imperial');
     cy.get('[data-testid="event-log"]').should('contain.text', 'Units changed to metric');
+
+    // Screenshot: Back to metric state
+    cy.screenshot('UnitsConversion-cycle-back-to-metric-cypress', { capture: 'viewport' });
   });
 
   it('demonstrates units state with initial imperial mode', () => {

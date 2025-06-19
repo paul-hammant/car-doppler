@@ -4,7 +4,7 @@
 
 import { ControlsTestHarness } from './ControlsTestHarness';
 
-describe('Controls Component - Paul Hammant Pattern', () => {
+describe('Controls Component - Test Harness Component Testing', () => {
   it('renders in test harness with initial state visible', () => {
     cy.mount(<ControlsTestHarness testName="Initial State Visibility" />);
 
@@ -12,10 +12,13 @@ describe('Controls Component - Paul Hammant Pattern', () => {
     cy.get('[data-testid="record-button"]').should('contain.text', 'Start');
     cy.get('[data-testid="unit-toggle-button"]').should('contain.text', 'mph');
 
-    // Assert on the TEST HARNESS (Paul Hammant's additional assertion)
+    // Assert on the TEST HARNESS (additional Test Harness Component Testing assertion)
     cy.get('[data-testid="harness-recording-state"]').should('contain.text', 'Recording: OFF');
     cy.get('[data-testid="harness-units-state"]').should('contain.text', 'Units: METRIC (km/h)');
     cy.get('[data-testid="test-name"]').should('contain.text', 'Initial State Visibility');
+
+    // Screenshot: Initial state for blog documentation
+    cy.screenshot('Controls-initial-state-cypress', { capture: 'viewport' });
   });
 
   it('demonstrates event coupling - recording toggle', () => {

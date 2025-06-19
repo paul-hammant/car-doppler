@@ -43,7 +43,8 @@ export default defineConfig({
       '**/e2e/**',
       '**/*.ct.test.{ts,tsx}',
       '**/playwright-report/**',
-      '**/test-results/**'
+      '**/test-results/**',
+      '**/playwright-version-of-repo/**'
     ],
   },
   plugins: [
