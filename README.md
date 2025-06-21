@@ -37,7 +37,7 @@ The tests demonstrate the **mph → km/h → mph** conversion cycle and recordin
    # For other browsers, you may need additional setup
    ```
 
-I, Paul, am developing on a Chromebook, and proper "Chrome" isn't available for Selenium use, so I'm using Firefox. I think Chromium (via apt-get was a choice too). I could be wrong.
+I, Paul, am developing on a Chromebook, and proper "Chrome" isn't available for Selenium use, so I'm using Firefox. I think Chromium (via apt-get was a choice too, but it is hard to set that up). I could be wrong. Also check that it is firefox and not firefox-esr in your `/usr/bin/` folder. On my chromebook I had to `sudo rm -rf /usr/bin/firefox-esr`
 
 3. **Verify Setup**
    ```bash

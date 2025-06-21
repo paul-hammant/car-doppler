@@ -12,9 +12,14 @@ const service = new firefox.ServiceBuilder(geckoDriverPath);
  */
 export async function getDriver(): Promise<WebDriver> {
   const options = new firefox.Options();
-  options.addArguments('--headless');
+  if (!process.env.HEADED && !process.env.CI) {
+    options.addArguments('--headless');
+  }
   options.addArguments('--no-sandbox');
   options.addArguments('--disable-dev-shm-usage');
+  
+  // Set Firefox binary path to regular Firefox (not ESR)
+  options.setBinary('/usr/bin/firefox');
   
   // Performance optimizations
   options.setPreference('media.navigator.permission.disabled', true);
@@ -41,15 +46,47 @@ export async function getDriver(): Promise<WebDriver> {
 /**
  * Gets the shared driver instance from global scope, or creates one if needed
  */
-export function getSharedDriver(): WebDriver {
+export async function getSharedDriver(): Promise<WebDriver> {
+  if (!(global as any).__SELENIUM_DRIVER__) {
+    (global as any).__SELENIUM_DRIVER__ = await getDriver();
+  }
   return (global as any).__SELENIUM_DRIVER__;
+}
+
+/**
+ * Cleans up the shared driver instance
+ */
+export async function cleanupSharedDriver(): Promise<void> {
+  if ((global as any).__SELENIUM_DRIVER__) {
+    try {
+      await (global as any).__SELENIUM_DRIVER__.quit();
+    } catch (error) {
+      // Driver may already be closed, ignore the error
+      console.log('Driver cleanup: session already closed or invalid');
+    } finally {
+      (global as any).__SELENIUM_DRIVER__ = null;
+    }
+  }
 }
 
 /**
  * Gets the shared E2E driver instance from global scope
  */
-export function getSharedE2EDriver(): WebDriver {
+export async function getSharedE2EDriver(): Promise<WebDriver> {
+  if (!(global as any).__SELENIUM_E2E_DRIVER__) {
+    (global as any).__SELENIUM_E2E_DRIVER__ = await getDriver();
+  }
   return (global as any).__SELENIUM_E2E_DRIVER__;
+}
+
+/**
+ * Cleans up the shared E2E driver instance
+ */
+export async function cleanupSharedE2EDriver(): Promise<void> {
+  if ((global as any).__SELENIUM_E2E_DRIVER__) {
+    await (global as any).__SELENIUM_E2E_DRIVER__.quit();
+    (global as any).__SELENIUM_E2E_DRIVER__ = null;
+  }
 }
 
 /**
@@ -68,9 +105,15 @@ export async function quitDriver(driver: WebDriver): Promise<void> {
  * @param testId The data-testid value.
  */
 export async function findElementByTestId(driver: WebDriver, testId: string) {
+  const startTime = Date.now();
   const selector = By.css(`[data-testid="${testId}"]`);
   await driver.wait(until.elementLocated(selector), 5000);
-  return driver.findElement(selector);
+  const element = driver.findElement(selector);
+  const endTime = Date.now();
+  if (process.env.DEBUG_TIMING) {
+    console.log(`[TIMING] findElementByTestId(${testId}): ${endTime - startTime}ms`);
+  }
+  return element;
 }
 
 /**
@@ -116,6 +159,7 @@ export async function isElementVisibleByTestId(driver: WebDriver, testId: string
  * @param filePath The full path (including filename) where the screenshot should be saved.
  */
 export async function takeScreenshot(driver: WebDriver, filePath: string): Promise<void> {
+  const startTime = Date.now();
   // Skip screenshots in CI or when SKIP_SCREENSHOTS env var is set
   if (process.env.CI || process.env.SKIP_SCREENSHOTS) {
     return;
@@ -127,7 +171,10 @@ export async function takeScreenshot(driver: WebDriver, filePath: string): Promi
   }
   const image = await driver.takeScreenshot();
   fs.writeFileSync(filePath, image, 'base64');
-  console.log(`Screenshot saved to ${filePath}`);
+  const endTime = Date.now();
+  if (process.env.DEBUG_TIMING) {
+    console.log(`[TIMING] takeScreenshot: ${endTime - startTime}ms`);
+  }
 }
 
 /**

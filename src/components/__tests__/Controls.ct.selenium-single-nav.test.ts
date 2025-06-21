@@ -13,7 +13,7 @@ describe('Controls Component - Single Navigation Selenium Tests', () => {
   let driver: WebDriver;
 
   beforeAll(async () => {
-    driver = getSharedDriver();
+    driver = await getSharedDriver();
     // Navigate once to any test harness page - we'll reuse this browser tab
     await driver.get(`${HARNESS_BASE_URL}/ControlsTestHarness?testName=SingleNavigation`);
     await findElementByTestId(driver, 'test-name');

@@ -9,7 +9,7 @@ module.exports = {
   ],
   testMatch: [
     "<rootDir>/e2e/**/*.selenium.test.[jt]s?(x)",
-    "<rootDir>/src/components/__tests__/**/*.selenium.test.ts"
+    "<rootDir>/src/components/__tests__/**/*.ct.selenium*.test.ts"
   ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'

@@ -16,7 +16,7 @@ describe('Doppler Speed Detection App - E2E Selenium Tests', () => {
   let driver: WebDriver;
 
   beforeAll(async () => {
-    driver = getSharedE2EDriver();
+    driver = await getSharedE2EDriver();
     // Navigate once to the app for all tests
     await driver.get(APP_BASE_URL);
     await driver.wait(until.elementLocated(By.css('h1')), 10000);

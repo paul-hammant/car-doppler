@@ -4,22 +4,22 @@ import {
   findElementByTestId,
   clickElementByTestId,
   getTextByTestId,
-  takeScreenshot,
-  navigateToTestMounter,
-  mountComponent
+  takeScreenshot
 } from '../../test-utils/selenium-utils';
 
 describe('Controls Component - Optimized Selenium Tests', () => {
   let driver: WebDriver;
 
   beforeAll(async () => {
-    driver = getSharedDriver();
-    // Navigate to test mounter once for all tests
-    await navigateToTestMounter(driver);
+    driver = await getSharedDriver();
+    // Navigate to test harness once for all tests
+    await driver.get('http://localhost:3001/render-component/ControlsTestHarness?testName=Initial');
+    await findElementByTestId(driver, 'test-name');
   });
 
   test('renders in test harness with initial state visible', async () => {
-    await mountComponent(driver, 'ControlsTestHarness', { testName: 'Initial State Visibility' });
+    await driver.get(`http://localhost:3001/render-component/ControlsTestHarness?testName=${encodeURIComponent('Initial State Visibility')}`);
+    await findElementByTestId(driver, 'test-name');
 
     await takeScreenshot(driver, 'test-results/selenium/Controls-initial-state-optimized.png');
 
@@ -34,7 +34,8 @@ describe('Controls Component - Optimized Selenium Tests', () => {
   });
 
   test('demonstrates event coupling - recording toggle', async () => {
-    await mountComponent(driver, 'ControlsTestHarness', { testName: 'Recording Toggle Event Coupling' });
+    await driver.get(`http://localhost:3001/render-component/ControlsTestHarness?testName=${encodeURIComponent('Recording Toggle Event Coupling')}`);
+    await findElementByTestId(driver, 'test-name');
 
     await takeScreenshot(driver, 'test-results/selenium/Controls-recording-toggle-before-optimized.png');
 
@@ -67,7 +68,8 @@ describe('Controls Component - Optimized Selenium Tests', () => {
   });
 
   test('demonstrates event coupling - units toggle', async () => {
-    await mountComponent(driver, 'ControlsTestHarness', { testName: 'Units Toggle Event Coupling' });
+    await driver.get(`http://localhost:3001/render-component/ControlsTestHarness?testName=${encodeURIComponent('Units Toggle Event Coupling')}`);
+    await findElementByTestId(driver, 'test-name');
 
     await takeScreenshot(driver, 'test-results/selenium/Controls-units-toggle-before-optimized.png');
 
@@ -98,10 +100,8 @@ describe('Controls Component - Optimized Selenium Tests', () => {
   });
 
   test('shows processing state affecting component', async () => {
-    await mountComponent(driver, 'ControlsTestHarness', { 
-      testName: 'Processing State Test', 
-      initialProcessing: true 
-    });
+    await driver.get(`http://localhost:3001/render-component/ControlsTestHarness?testName=${encodeURIComponent('Processing State Test')}&initialProcessing=true`);
+    await findElementByTestId(driver, 'test-name');
 
     await takeScreenshot(driver, 'test-results/selenium/Controls-processing-state-optimized.png');
 
@@ -117,7 +117,8 @@ describe('Controls Component - Optimized Selenium Tests', () => {
   });
 
   test('complex scenario - multiple interactions with full trace', async () => {
-    await mountComponent(driver, 'ControlsTestHarness', { testName: 'Complex Multi-Interaction Scenario' });
+    await driver.get(`http://localhost:3001/render-component/ControlsTestHarness?testName=${encodeURIComponent('Complex Multi-Interaction Scenario')}`);
+    await findElementByTestId(driver, 'test-name');
 
     await takeScreenshot(driver, 'test-results/selenium/Controls-complex-scenario-start-optimized.png');
 
