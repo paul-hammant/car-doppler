@@ -4,8 +4,58 @@ import ReactDOMServer from 'react-dom/server';
 import path from 'path'; // Ensure path is imported
 import fs from 'fs';
 
+// Hook to handle CSS requires in Node.js - prevents crashes when components require CSS files
+const Module = require('module');
+const originalRequire = Module.prototype.require;
+Module.prototype.require = function(id: string) {
+    // If it's a CSS file, return an empty object instead of trying to execute it
+    if (id.endsWith('.css')) {
+        return {};
+    }
+    // Redirect fft-status to mock during server-side rendering
+    if (id === '../services/fft-status' || id.includes('fft-status')) {
+        // Path from components to mocks is always ../services/__mocks__/fft-status
+        const mockPath = '../services/__mocks__/fft-status';
+        return originalRequire.call(this, mockPath);
+    }
+    return originalRequire.apply(this, arguments);
+};
+
 // This flag helps the server adjust paths if it's running from 'dist_server' or 'src'
 const IS_DIST_SERVER = __filename.includes('dist_server');
+
+// Function to collect CSS dependencies for a component
+function collectComponentCSS(componentName: string): string[] {
+    const cssFiles: string[] = [];
+    const componentCSSFiles = [
+        'DebugConsole.css',
+        'Controls.css', 
+        'FileInput.css',
+        'PositioningGuide.css',
+        'SpeedDisplay.css',
+        'StatusDisplay.css'
+    ];
+    
+    // Always include the base component CSS if it exists
+    const baseName = componentName.replace('TestHarness', '');
+    const componentCSS = `${baseName}.css`;
+    if (componentCSSFiles.includes(componentCSS)) {
+        cssFiles.push(`/css/${componentCSS}`);
+    }
+    
+    // For test harnesses, we might need multiple CSS files
+    if (componentName.includes('TestHarness')) {
+        // Include any additional CSS files that might be needed
+        // For now, we'll include all component CSS since they're small
+        componentCSSFiles.forEach(file => {
+            if (!cssFiles.includes(`/css/${file}`)) {
+                cssFiles.push(`/css/${file}`);
+            }
+        });
+    }
+    
+    return cssFiles;
+}
 
 async function importComponent(componentName: string, props: any) {
     try {
@@ -58,6 +108,11 @@ const staticBundlesPath = path.resolve(
 console.log("Serving static bundles from:", staticBundlesPath);
 app.use('/static_bundles', express.static(staticBundlesPath));
 
+// Serve CSS files from src/components
+const cssPath = path.resolve(process.cwd(), 'src/components');
+console.log("Serving CSS files from:", cssPath);
+app.use('/css', express.static(cssPath));
+
 // Serve the test mounter HTML page
 app.get('/test-mounter', (req, res) => {
     const testMounterPath = path.resolve(__dirname, 'test-mounter.html');
@@ -89,12 +144,21 @@ app.get('/render-component/:componentName', async (req, res) => {
         const componentHtml = ReactDOMServer.renderToString(componentElementOrError);
         // Escape quotes for HTML data attribute
         const propsString = JSON.stringify(props || {}).replace(/"/g, '&quot;');
+        // Check if hydration file exists
+        const hydrateScriptPath = path.resolve(process.cwd(), 'dist_harness_bundles', `${componentName}.hydrate.js`);
+        const hasHydrateScript = fs.existsSync(hydrateScriptPath);
+        
+        // Collect CSS files for this component
+        const cssFiles = collectComponentCSS(componentName);
+        const cssLinks = cssFiles.map(cssFile => `<link rel="stylesheet" href="${cssFile}">`).join('\n            ');
+        
         const html = `
             <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Test: ${componentName}</title>
             <style>body{margin:0;font-family:sans-serif;background-color:#f0f0f0;}.test-harness-container{padding:20px;background-color:#f5f5f5;min-height:300px;}.component-section{border:2px solid #007acc;padding:10px;margin:10px 0;background-color:white;}.harness-state-section{border:2px solid #28a745;padding:10px;margin:10px 0;background-color:white;}.event-log-section{border:2px solid #ffc107;padding:10px;margin:10px 0;background-color:white;}</style>
+            ${cssLinks}
             </head><body>
                 <div id="root-harness" class="test-harness-container" data-props='${propsString}'>${componentHtml}</div>
-                <script src="/static_bundles/ControlsTestHarness.hydrate.js"></script>
+                <script src="/static_bundles/${componentName}.hydrate.js"></script>
             </body></html>`;
         res.send(html);
     } else {

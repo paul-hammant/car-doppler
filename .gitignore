@@ -10,6 +10,8 @@
 playwright-report/
 test-results/
 playwright/.cache/
+dist_server/
+dist_harness_bundles/
 
 # production
 /build

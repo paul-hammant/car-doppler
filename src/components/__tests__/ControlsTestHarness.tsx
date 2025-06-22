@@ -3,7 +3,8 @@
  */
 
 import React, { useState } from 'react';
-import { Controls } from '../Controls'; // Corrected to named import
+import { Controls } from '../Controls';
+import { BaseTestHarness, useTestHarness } from './BaseTestHarness';
 
 // Test Harness Component - simulates how Controls would be used in the real app
 export const ControlsTestHarness: React.FC<{
@@ -20,63 +21,69 @@ export const ControlsTestHarness: React.FC<{
   const [isRecording, setIsRecording] = useState(initialRecording);
   const [isMetric, setIsMetric] = useState(initialMetric);
   const [isProcessing, setIsProcessing] = useState(initialProcessing);
-  const [eventLog, setEventLog] = useState<string[]>([]);
 
-  const logEvent = (event: string) => {
-    setEventLog(prev => [...prev, `${new Date().toISOString()}: ${event}`]);
-  };
+  const harnessStateContent = (
+    <>
+      <div data-testid="harness-recording-state">
+        Recording: {isRecording ? 'ON' : 'OFF'}
+      </div>
+      <div data-testid="harness-units-state">
+        Units: {isMetric ? 'METRIC (km/h)' : 'IMPERIAL (mph)'}
+      </div>
+      <div data-testid="harness-processing-state">
+        Processing: {isProcessing ? 'YES' : 'NO'}
+      </div>
+    </>
+  );
+
+  const initialEventMessage = `Controls harness initialized - Recording: ${isRecording ? 'ON' : 'OFF'}, Units: ${isMetric ? 'METRIC' : 'IMPERIAL'}`;
+
+  return (
+    <BaseTestHarness 
+      testName={testName}
+      harnessStateContent={harnessStateContent}
+      initialEventMessage={initialEventMessage}
+    >
+      <ControlsWithLogging
+        isRecording={isRecording}
+        isProcessing={isProcessing}
+        isMetric={isMetric}
+        onRecordingChange={setIsRecording}
+        onUnitsChange={setIsMetric}
+      />
+    </BaseTestHarness>
+  );
+};
+
+// Wrapper component that uses the test harness context for logging
+const ControlsWithLogging: React.FC<{
+  isRecording: boolean;
+  isProcessing: boolean;
+  isMetric: boolean;
+  onRecordingChange: (state: boolean) => void;
+  onUnitsChange: (state: boolean) => void;
+}> = ({ isRecording, isProcessing, isMetric, onRecordingChange, onUnitsChange }) => {
+  const { logEvent } = useTestHarness();
 
   const handleToggleRecording = () => {
     const newState = !isRecording;
-    setIsRecording(newState);
+    onRecordingChange(newState);
     logEvent(`Recording ${newState ? 'started' : 'stopped'}`);
   };
 
   const handleToggleUnits = () => {
     const newState = !isMetric;
-    setIsMetric(newState);
+    onUnitsChange(newState);
     logEvent(`Units changed to ${newState ? 'metric' : 'imperial'}`);
   };
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '300px' }}>
-      <h2 data-testid="test-name">Test: {testName}</h2>
-      
-      {/* Component Under Test */}
-      <div style={{ border: '2px solid #007acc', padding: '10px', margin: '10px 0' }}>
-        <h3>Component Under Test</h3>
-        <Controls 
-          isRecording={isRecording}
-          isProcessing={isProcessing}
-          isMetric={isMetric}
-          onToggleRecording={handleToggleRecording}
-          onToggleUnits={handleToggleUnits}
-        />
-      </div>
-
-      {/* Test Harness State - what we can assert on */}
-      <div style={{ border: '2px solid #28a745', padding: '10px', margin: '10px 0' }}>
-        <h3>Test Harness State</h3>
-        <div data-testid="harness-recording-state">
-          Recording: {isRecording ? 'ON' : 'OFF'}
-        </div>
-        <div data-testid="harness-units-state">
-          Units: {isMetric ? 'METRIC (km/h)' : 'IMPERIAL (mph)'}
-        </div>
-        <div data-testid="harness-processing-state">
-          Processing: {isProcessing ? 'YES' : 'NO'}
-        </div>
-      </div>
-
-      {/* Event Log - traces the event coupling */}
-      <div style={{ border: '2px solid #ffc107', padding: '10px', margin: '10px 0' }}>
-        <h3>Event Log (Event Coupling Trace)</h3>
-        <div data-testid="event-log" style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-          {eventLog.length === 0 ? 'No events yet...' : eventLog.map((event, i) => (
-            <div key={i} data-testid={`event-${i}`}>{event}</div>
-          ))}
-        </div>
-      </div>
-    </div>
+    <Controls 
+      isRecording={isRecording}
+      isProcessing={isProcessing}
+      isMetric={isMetric}
+      onToggleRecording={handleToggleRecording}
+      onToggleUnits={handleToggleUnits}
+    />
   );
 };

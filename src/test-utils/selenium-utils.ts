@@ -7,6 +7,7 @@ import * as path from 'path';
 const geckoDriverPath = require('geckodriver').path;
 const service = new firefox.ServiceBuilder(geckoDriverPath);
 
+
 /**
  * Initializes and returns a new Selenium WebDriver instance for Firefox.
  */
@@ -38,18 +39,19 @@ export async function getDriver(): Promise<WebDriver> {
     .build();
   
   // Set implicit wait for faster element finding
-  await driver.manage().setTimeouts({ implicit: 5000 });
+  await driver.manage().setTimeouts({ implicit: 1000 });
   
   return driver;
 }
 
 /**
- * Gets the shared driver instance from global scope, or creates one if needed
+ * Gets the shared driver instance from global scope (should be created in globalSetup)
  */
 export async function getSharedDriver(): Promise<WebDriver> {
   if (!(global as any).__SELENIUM_DRIVER__) {
-    (global as any).__SELENIUM_DRIVER__ = await getDriver();
+    throw new Error('Global Selenium driver not found. Make sure globalSetup is properly configured.');
   }
+  console.log(`[PID: ${process.pid}] Using global shared driver instance.`);
   return (global as any).__SELENIUM_DRIVER__;
 }
 
@@ -58,8 +60,10 @@ export async function getSharedDriver(): Promise<WebDriver> {
  */
 export async function cleanupSharedDriver(): Promise<void> {
   if ((global as any).__SELENIUM_DRIVER__) {
+    console.log(`[PID: ${process.pid}] Cleaning up shared driver instance...`);
     try {
       await (global as any).__SELENIUM_DRIVER__.quit();
+      console.log(`[PID: ${process.pid}] Shared driver instance cleaned up.`);
     } catch (error) {
       // Driver may already be closed, ignore the error
       console.log('Driver cleanup: session already closed or invalid');
@@ -107,7 +111,18 @@ export async function quitDriver(driver: WebDriver): Promise<void> {
 export async function findElementByTestId(driver: WebDriver, testId: string) {
   const startTime = Date.now();
   const selector = By.css(`[data-testid="${testId}"]`);
-  await driver.wait(until.elementLocated(selector), 5000);
+  
+  // Create the condition explicitly to avoid import issues
+  const elementLocatedCondition = async (driver: WebDriver) => {
+    try {
+      const elements = await driver.findElements(selector);
+      return elements.length > 0 ? elements[0] : null;
+    } catch (error) {
+      return null;
+    }
+  };
+  
+  await driver.wait(elementLocatedCondition, 2000);
   const element = driver.findElement(selector);
   const endTime = Date.now();
   if (process.env.DEBUG_TIMING) {
@@ -123,7 +138,17 @@ export async function findElementByTestId(driver: WebDriver, testId: string) {
  */
 export async function clickElementByTestId(driver: WebDriver, testId: string): Promise<void> {
   const element = await findElementByTestId(driver, testId);
-  await driver.wait(until.elementIsEnabled(element), 5000);
+  
+  // Create the enabled condition explicitly
+  const elementEnabledCondition = async () => {
+    try {
+      return await element.isEnabled();
+    } catch (error) {
+      return false;
+    }
+  };
+  
+  await driver.wait(elementEnabledCondition, 1000);
   await element.click();
 }
 
@@ -182,12 +207,23 @@ export async function takeScreenshot(driver: WebDriver, filePath: string): Promi
  */
 export async function navigateToTestMounter(driver: WebDriver): Promise<void> {
   await driver.get('http://localhost:3001/test-mounter');
+  
   // Wait for the test mounter to be ready
-  await driver.wait(until.elementLocated(By.id('root')), 10000);
+  const rootElementCondition = async (driver: WebDriver) => {
+    try {
+      const elements = await driver.findElements(By.id('root'));
+      return elements.length > 0 ? elements[0] : null;
+    } catch (error) {
+      return null;
+    }
+  };
+  
+  await driver.wait(rootElementCondition, 3000);
+  
   // Wait for the test mounter JavaScript to load
   await driver.wait(async () => {
     return await driver.executeScript('return window.testMounterReady === true;');
-  }, 5000);
+  }, 2000);
 }
 
 /**
@@ -204,5 +240,14 @@ export async function mountComponent(driver: WebDriver, componentName: string, p
   }
   
   // Wait for the component to be mounted
-  await driver.wait(until.elementLocated(By.css('[data-testid="test-name"]')), 5000);
+  const testNameCondition = async (driver: WebDriver) => {
+    try {
+      const elements = await driver.findElements(By.css('[data-testid="test-name"]'));
+      return elements.length > 0 ? elements[0] : null;
+    } catch (error) {
+      return null;
+    }
+  };
+  
+  await driver.wait(testNameCondition, 2000);
 }

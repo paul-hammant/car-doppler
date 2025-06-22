@@ -18,10 +18,16 @@
     "outDir": "./dist_server"
   },
   "files": [
-    "\/app\/src\/test-utils\/component-test-server\/server_for_compile.ts",
-    "\/app\/src\/components\/__tests__\/ControlsTestHarness.tsx",
-    "\/app\/src\/components\/Controls.tsx",
-    "\/app\/src\/services\/fft-status.ts",
-    "\/app\/src\/types\/index.ts"
+    "src/test-utils/component-test-server/server_for_compile.ts",
+    "src/components/__tests__/ControlsTestHarness.tsx",
+    "src/components/__tests__/DebugConsoleTestHarness.tsx",
+    "src/components/__tests__/ExpandedDebugConsoleTestHarness.tsx",
+    "src/components/Controls.tsx",
+    "src/components/DebugConsole.tsx",
+    "src/services/fft-status.ts",
+    "src/types/index.ts"
+  ],
+  "include": [
+    "src/components/*.css"
   ]
 }

@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const path = require('path');
+const { getDriver } = require('./selenium-utils');
 
 module.exports = async () => {
   console.log('\nStarting component test server...');
@@ -20,7 +21,18 @@ module.exports = async () => {
       // console.log(`Server stdout: ${output}`); 
       if (output.includes('listening on http://localhost:3001')) {
         console.log('Component test server started successfully.');
-        resolve();
+        
+        // Server is ready, now create global shared driver
+        console.log('Starting global Selenium driver...');
+        const { getDriver } = require('./selenium-utils');
+        getDriver().then(driver => {
+          global.__SELENIUM_DRIVER__ = driver;
+          console.log('Global Selenium driver started successfully.');
+          resolve();
+        }).catch(error => {
+          console.error('Failed to start global Selenium driver:', error);
+          reject(error);
+        });
       }
     });
 
