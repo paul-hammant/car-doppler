@@ -12,6 +12,7 @@ test-results/
 playwright/.cache/
 dist_server/
 dist_harness_bundles/
+logs/
 
 # production
 /build
