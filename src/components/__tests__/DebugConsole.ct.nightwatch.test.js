@@ -40,7 +40,7 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-comprehensive.png');
 
     // Basic collapsed state assertions
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Show Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Show Debug Console');
     // Check that debug console container doesn't exist or is not visible when collapsed
     browser.expect.element('[data-testid="debug-console-container"]').to.not.be.present;
 
@@ -51,8 +51,8 @@ module.exports = {
       .to.have.attribute('class').which.contains('debug-toggle-button');
 
     // Harness state verification
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 4');
-    NightWatchUtils.assertTextContains(browser, 'harness-intercept-state', 'Intercept Console: NO');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 4');
+    NightWatchUtils.assertTextEquals(browser, 'harness-intercept-state', 'Intercept Console: NO');
     
     // Event log section presence
     browser.expect.element('[data-testid="event-log"]').to.be.visible;
@@ -66,9 +66,9 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-empty.png');
 
     // Should show collapsed state with zero logs
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Show Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Show Debug Console');
     browser.expect.element('[data-testid="debug-console-container"]').to.not.be.present;
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 0');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 0');
   },
 
   'handles large number of log entries': function(browser) {
@@ -85,8 +85,8 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-many-logs.png');
 
     // Should handle large log count correctly
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 50');
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Show Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 50');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Show Debug Console');
     browser.expect.element('[data-testid="debug-console-container"]').to.not.be.present;
   },
 
@@ -116,11 +116,11 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-production-scenarios.png');
 
     // Verify the debug console is initially collapsed but has production content loaded
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Show Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Show Debug Console');
     browser.expect.element('[data-testid="debug-console-container"]').to.not.be.present;
     
     // Verify all production logs are loaded in the harness
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 10');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 10');
 
     // Verify the harness has the event log capability 
     browser.expect.element('[data-testid="event-log"]').to.be.present;
@@ -130,7 +130,7 @@ module.exports = {
     
     // Test that the component is ready to display production scenarios
     // Check if the production logs would be available when expanded (through DOM inspection)
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 10');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 10');
   },
 
   'expanded debug console with production-like content': function(browser) {
@@ -164,14 +164,14 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-expanded-production.png');
 
     // Verify the harness loaded correctly with the production logs
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 10');
-    NightWatchUtils.assertTextContains(browser, 'harness-expanded-state', 'EXPANDED');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 10');
+    NightWatchUtils.assertTextEquals(browser, 'harness-expanded-state', 'Debug Console State: EXPANDED (for testing)');
     
     // Verify the debug console container is visible (forced expanded in this harness)
     browser.expect.element('[data-testid="debug-console-container"]').to.be.visible;
     
     // Verify the toggle button shows the correct expanded state
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Hide Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Hide Debug Console');
 
     // Verify all production logs are visible in the expanded console
     browser.expect.element('[data-testid="debug-log-entry-0"]').to.be.visible;
@@ -227,10 +227,10 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-dynamic-support-initial.png');
 
     // Verify initial state with original logs in expanded form
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Hide Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Hide Debug Console');
     browser.expect.element('[data-testid="debug-console-container"]').to.be.visible;
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 2');
-    NightWatchUtils.assertTextContains(browser, 'harness-expanded-state', 'EXPANDED');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 2');
+    NightWatchUtils.assertTextEquals(browser, 'harness-expanded-state', 'Debug Console State: EXPANDED (for testing)');
     
     // Assert on the actual content of the two contrived entries
     NightWatchUtils.assertTextContains(browser, 'debug-log-entry-0', 'ADDED AFTER 1');
@@ -268,8 +268,8 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'DebugConsole-dynamic-support-updated.png');
 
     // Verify the updated log count
-    NightWatchUtils.assertTextContains(browser, 'harness-log-count', 'Log Count: 5');
-    NightWatchUtils.assertTextContains(browser, 'harness-expanded-state', 'EXPANDED');
+    NightWatchUtils.assertTextEquals(browser, 'harness-log-count', 'Log Count: 5');
+    NightWatchUtils.assertTextEquals(browser, 'harness-expanded-state', 'Debug Console State: EXPANDED (for testing)');
     
     // Assert on the content of the original contrived entries (should still be there)
     NightWatchUtils.assertTextContains(browser, 'debug-log-entry-0', 'ADDED AFTER 1');
@@ -298,6 +298,6 @@ module.exports = {
 
     // Verify component structure remains stable with dynamic content changes
     browser.expect.element('[data-testid="debug-toggle-button"]').to.be.present;
-    NightWatchUtils.assertTextContains(browser, 'debug-toggle-button', 'Hide Debug Console');
+    NightWatchUtils.assertTextEquals(browser, 'debug-toggle-button', 'Hide Debug Console');
   }
 };

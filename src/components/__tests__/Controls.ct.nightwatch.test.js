@@ -17,13 +17,13 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'Controls-initial-state.png');
 
     // Assert on the COMPONENT
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Start');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Start\nListening');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
 
     // Assert on the TEST HARNESS state
-    NightWatchUtils.assertTextContains(browser, 'harness-recording-state', 'Recording: OFF');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'Units: METRIC (km/h)');
-    NightWatchUtils.assertTextContains(browser, 'test-name', 'Initial State Visibility');
+    NightWatchUtils.assertTextEquals(browser, 'harness-recording-state', 'Recording: OFF');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'test-name', 'Test: Initial State Visibility');
   },
 
   'demonstrates event coupling - recording toggle': function(browser) {
@@ -31,29 +31,29 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'Controls-recording-toggle-before.png');
 
     // Initial state assertions
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Start');
-    NightWatchUtils.assertTextContains(browser, 'harness-recording-state', 'OFF');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'No events yet...');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Start\nListening');
+    NightWatchUtils.assertTextEquals(browser, 'harness-recording-state', 'Recording: OFF');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'No events yet...');
 
     // Click the record button
     NightWatchUtils.clickElementByTestId(browser, 'record-button');
     NightWatchUtils.takeScreenshot(browser, 'Controls-recording-toggle-started.png');
 
     // Assert on COMPONENT state change
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Stop');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Stop');
     // Assert on TEST HARNESS state change
-    NightWatchUtils.assertTextContains(browser, 'harness-recording-state', 'Recording: ON');
+    NightWatchUtils.assertTextEquals(browser, 'harness-recording-state', 'Recording: ON');
     // Assert on EVENT COUPLING trace
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Recording started');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Recording started');
 
     // Toggle back
     NightWatchUtils.clickElementByTestId(browser, 'record-button');
     NightWatchUtils.takeScreenshot(browser, 'Controls-recording-toggle-stopped.png');
 
     // Final state assertions
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Start');
-    NightWatchUtils.assertTextContains(browser, 'harness-recording-state', 'Recording: OFF');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Recording stopped');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Start\nListening');
+    NightWatchUtils.assertTextEquals(browser, 'harness-recording-state', 'Recording: OFF');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Recording stopped');
   },
 
   'demonstrates event coupling - units toggle': function(browser) {
@@ -61,27 +61,27 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'Controls-units-toggle-before.png');
 
     // Initial state
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
 
     // Click to switch to imperial
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
     NightWatchUtils.takeScreenshot(browser, 'Controls-units-toggle-imperial.png');
 
     // Component updated
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'km/h');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'km/h');
     // Harness state updated
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'IMPERIAL (mph)');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: IMPERIAL (mph)');
     // Event was logged
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to imperial');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Units changed to imperial');
 
     // Switch back
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
     NightWatchUtils.takeScreenshot(browser, 'Controls-units-toggle-metric.png');
 
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'METRIC (km/h)');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to metric');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Units changed to metric');
   },
 
   'shows processing state affecting component': function(browser) {
@@ -98,7 +98,7 @@ module.exports = {
     });
 
     // Harness shows processing state
-    NightWatchUtils.assertTextContains(browser, 'harness-processing-state', 'Processing: YES');
+    NightWatchUtils.assertTextEquals(browser, 'harness-processing-state', 'Processing: YES');
   },
 
   'complex scenario - multiple interactions with full trace': function(browser) {
@@ -106,8 +106,8 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'Controls-complex-scenario-start.png');
 
     // Verify initial state
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Start');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Start\nListening');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
 
     NightWatchUtils.clickElementByTestId(browser, 'record-button');
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
@@ -118,10 +118,10 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'Controls-complex-scenario-final.png');
 
     // Final state should be back to initial
-    NightWatchUtils.assertTextContains(browser, 'record-button', 'Start');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
-    NightWatchUtils.assertTextContains(browser, 'harness-recording-state', 'OFF');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'METRIC');
+    NightWatchUtils.assertTextEquals(browser, 'record-button', 'Start\nListening');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
+    NightWatchUtils.assertTextEquals(browser, 'harness-recording-state', 'Recording: OFF');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
     
     // Verify event log contains all events
     NightWatchUtils.assertTextContains(browser, 'event-log', 'Recording started');

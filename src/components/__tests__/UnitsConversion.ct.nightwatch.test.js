@@ -20,46 +20,40 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-cycle-initial-metric.png');
 
     // === INITIAL STATE: mph (metric mode, showing imperial target) ===
-    NightWatchUtils.assertTextContains(browser, 'test-name', 'Initial');
+    NightWatchUtils.assertTextEquals(browser, 'test-name', 'Test: Initial');
     
     // Component shows: "Switch to mph" (because we're in metric mode)
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'Switch to');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
     
     // Harness state shows: METRIC (km/h) 
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'Units: METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
     
     // Event log is empty
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'No events yet...');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'No events yet...');
 
     // === FIRST CLICK: mph → km/h (metric to imperial) ===
+    //browser.pause(100);
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-cycle-switched-imperial.png');
 
     // Component now shows: "Switch to km/h" (because we're in imperial mode)
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'Switch to');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'km/h');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'km/h');
     
     // Harness state updated via event coupling
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'Units: IMPERIAL (mph)');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: IMPERIAL (mph)');
     
     // Event was logged
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to imperial');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Units changed to imperial');
 
     // === SECOND CLICK: km/h → mph (imperial back to metric) ===
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-cycle-back-to-metric.png');
 
     // Component back to showing: "Switch to mph" (metric mode again)
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'Switch to');
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
     
     // Harness state back to original
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'Units: METRIC (km/h)');
-    
-    // Both events logged
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to imperial');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to metric');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
   },
 
   'demonstrates units state with initial imperial mode': function(browser) {
@@ -67,17 +61,17 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-initial-imperial.png');
 
     // Initial state: imperial mode (showing metric target)
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'km/h');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'IMPERIAL (mph)');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'km/h');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: IMPERIAL (mph)');
 
     // Click to switch to metric
     NightWatchUtils.clickElementByTestId(browser, 'unit-toggle-button');
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-imperial-to-metric.png');
 
     // Now in metric mode
-    NightWatchUtils.assertTextContains(browser, 'unit-toggle-button', 'mph');
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'METRIC (km/h)');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'Units changed to metric');
+    NightWatchUtils.assertTextEquals(browser, 'unit-toggle-button', 'Switch to\nmph');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'Units changed to metric');
   },
 
   'demonstrates units toggle with processing state': function(browser) {
@@ -88,7 +82,7 @@ module.exports = {
     NightWatchUtils.isElementEnabled(browser, 'unit-toggle-button', function(result) {
       browser.assert.equal(result.value, false, 'Unit toggle button should be disabled during processing');
     });
-    NightWatchUtils.assertTextContains(browser, 'harness-processing-state', 'Processing: YES');
+    NightWatchUtils.assertTextEquals(browser, 'harness-processing-state', 'Processing: YES');
 
     // Try to click (should not work due to disabled state)
     // Note: NightWatch will automatically wait for elements to be enabled before clicking
@@ -96,7 +90,7 @@ module.exports = {
     NightWatchUtils.takeScreenshot(browser, 'UnitsConversion-processing-no-change.png');
 
     // State should remain unchanged
-    NightWatchUtils.assertTextContains(browser, 'harness-units-state', 'METRIC (km/h)');
-    NightWatchUtils.assertTextContains(browser, 'event-log', 'No events yet...');
+    NightWatchUtils.assertTextEquals(browser, 'harness-units-state', 'Units: METRIC (km/h)');
+    NightWatchUtils.assertTextEquals(browser, 'event-log', 'No events yet...');
   }
 };

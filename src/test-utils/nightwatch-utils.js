@@ -37,7 +37,7 @@ class NightWatchUtils {
     return browser
       .waitForElementPresent(`[data-testid="${testId}"]`, 2000)
       .waitForElementVisible(`[data-testid="${testId}"]`, 1000)
-      .click(`[data-testid="${testId}"]`);
+      .click(`[data-testid="${testId}"]`).execute();
   }
 
   /**
@@ -86,6 +86,12 @@ class NightWatchUtils {
     return browser
       .waitForElementPresent(`[data-testid="${testId}"]`, 2000)
       .assert.textContains(`[data-testid="${testId}"]`, expectedText);
+  }
+
+  static assertTextEquals(browser, testId, expectedText) {
+    return browser
+      .waitForElementPresent(`[data-testid="${testId}"]`, 2000)
+      .assert.textEquals(`[data-testid="${testId}"]`, expectedText);
   }
 
   /**
