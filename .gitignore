@@ -31,9 +31,6 @@ yarn-error.log*
 
 node_modules
 dist
-node_modules
-dist
-
 
 .nx/cache
 .nx/workspace-data

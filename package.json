@@ -24,7 +24,7 @@
     "postbuild:server": "echo 'CSS imports will be handled by the server'",
     "test:ct": "npm run build:server --silent && nightwatch --config nightwatch.conf.js src/components/__tests__/**/*.ct.nightwatch.test.js",
     "test:ct:headed": "npm run build:server --silent && HEADED=true nightwatch --config nightwatch.conf.js --env headed src/components/__tests__/**/*.ct.nightwatch.test.js",
-    "test:ct:server": "node ./dist_server/test-utils/component-test-server/server_for_compile.js",
+    "test:ct:server": "node ./dist_server/test-utils/component-test-server/server_for_compile.js"
   },
   "eslintConfig": {
     "extends": [
